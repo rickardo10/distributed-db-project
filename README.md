@@ -17,4 +17,21 @@ destruir el ambiente con `vagrant destroy` y volverlo a montar con `vagrant up`.
 
 Uno de los aspectos importantes en MongoDB son los **conjuntos de replicación**. Estos conjuntos son procesos que mantienen mantienen el mismo conjunto de datos almacenados en diferentes servidores. Los conjuntos de replicas proven redundancia y alta disponibilidad.  
 
-Además, la base de datos escala automáticamente de forma horizontal sin comprometer la funcionalidad. A lo anterior lo llaman **sharding** que es el proceso de almacenar documentos a travez de múltiples máquinas. Así, se agregan la cantidad de servidores que cubran la demanda de operaciones de lectura y escritura y automáticamente se balancean las cargas.
+Además, la base de datos escala automáticamente de forma horizontal sin comprometer la funcionalidad. A lo anterior lo llaman ***sharding*** que es el proceso de almacenar documentos a travez de múltiples máquinas. Así, se agregan la cantidad de servidores que cubran la demanda de operaciones de lectura y escritura y automáticamente se balancean las cargas.
+
+
+# Conocimientos previos
+
+## Sharding
+
+***Sharding*** es un método para el almacenamiento de datos en múltiples máquinas. Este método es utilizado por MongoDB para desplegar grandes bases de datos y grandes operaciones de salidar; este tipo de características pueden sobrepasar la capacidad de almacenamiento y procesamiento de una máquina. Además, trabajar con cantidades de datos que superan la RAM estrela la capacidad de I/O de los discos duros. Para atacar este poblema en MongoDB se utilizan dos aproximaciones: (1)
+**vertical scaling** y (2) **sharding**. **Sharding** o escalamiento horizontal divide el conjunto de datos y lo distribuye a traves de los servidores o **shard**. Cada **shard** es una base de datos independiente y colectivamente los shards hacen una sola base de datos lógica. Por otro lado, el **vertical scaling** consta de agregar más CPUs y recursos de almacenamiento para incrementar la capacidad.
+
+Las ventajas de **sharding** son:
+* Reduce el númer ode operaciones que cada servidor maneja. Cada servidor maneja menos operaciones con forme se agregan nodos.
+* Reduce la cantidad de datos en cada servidor.
+* Aumenta la disponibilidad de los datos, ya que cada servidor puede ser replicado.
+
+## Arquitectura de un cluster en MongoDB
+
+![Arquitectura Cluster](images/arquitectura.png)
