@@ -36,7 +36,7 @@ Las ventajas de **sharding** son:
 
 En la siguiente imagen se muestra la configuración de un cluster de shards. Un cluster de shards está compuesto por los siguietnes componentes: *shards*, *query routers* y *config servers*.
 
-![Arquitectura Cluster](images/arquitectura.png)
+![Arquitectura Cluster](/images/arquitectura.png)
 
 La función de cada uno de los componentes es la siguiente:
 
@@ -52,7 +52,7 @@ MongoDB distribuye los datos a un nivel de collección. Las particiones se lleva
 
 Una manera de distribuir los datos es llamado **hash based sharding**; consta de calcular un hash del valor de un campo y utiliza los hashes para crear los chunks. La ventaja de este tipo de partición es que se divide de manera aleatoria la información. En la siguiente figura se muestra el procedimiento.
 
-![Sharding](images/sharding.png)
+![Sharding](/images/sharding.png)
 
 ## Balance del distribución de los datos
 
