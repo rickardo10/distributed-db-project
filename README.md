@@ -34,4 +34,34 @@ Las ventajas de **sharding** son:
 
 ## Arquitectura de un cluster en MongoDB
 
+En la siguiente imagen se muestra la configuración de un cluster de shards. Un cluster de shards está compuesto por los siguietnes componentes: *shards*, *query routers* y *config servers*.
+
 ![Arquitectura Cluster](images/arquitectura.png)
+
+La función de cada uno de los componentes es la siguiente:
+
+* Los **Shards** almacenan los datos. En clusters de producción, cada shard es un **conjunto de réplica**. Así se provee alta disponibilidad y consistencia de datos. Un conjunto de réplica son servidores que contienen los mismos datos y se sincronizan.
+
+* Los **Query Routers** también conocidos como **mongos instances**, son las interfaces que mantienen la comunicación con las aplicaciones del cliente y operaciones directas. El query router procesa y enfoca las operaciones a los shards y luego devuelve los resultados a los clientes. Para mantener disponibilidad un cluster de shards debe contener más de un query router.
+
+* Los **Config servers** almacenan los metadatos del cluster. Estos datos mapean los datos a los shards. El query router utiliza estos metadatos para enfocar las operaciones al shard specífico. En clusters de producción se contienen 3 config servers.
+
+## Particionamiento de datos
+
+MongoDB distribuye los datos a un nivel de collección. Las particiones se llevan a cabo por medio de un **shard key**. Una shard key es un campo indexado. Todos los documentos que están en una colección distribuida deben tener una shard key. MongoDB divide los documentos en **chunks** y distribuye los chunks, aproximadamente del mismo tamaño, en todos servidores.
+
+Una manera de distribuir los datos es llamado **hash based sharding**; consta de calcular un hash del valor de un campo y utiliza los hashes para crear los chunks. La ventaja de este tipo de partición es que se divide de manera aleatoria la información. En la siguiente figura se muestra el procedimiento.
+
+![Sharding](images/sharding.png)
+
+## Balance del distribución de los datos
+
+Al insertar documentos, o eliminar documentos en una collección, se puede perder el balance en el cluster. Lo que significa, que un servidor puede llegar a tener más o menos chunks que otros. Además, es pósible que el tamaño de un chunk sea significativamente mayor que otros. Para prevenir este tipo de situaciones MongoDB corre dos procesos (1) **Splitting** y (2) **Balancing**. Splitting es un *background process* que evita que los chunks crezcan demasiado. Cuando un chunk
+crece demasiado lo divide entre dos y modifica los metadatos en el config server. Por otro lado, en el fondo corre el proceso **balancer** el cual administra la migración de chunks. El balancer corre en todos los query routers en un cluster. Cuando la distribución en un cluster no está equilibrada, el proceso balancer migra chunks de un servidor a otro hasta que todos tienen aproximadamente la misma cantidad de datos. 
+
+### Adición y eliminación de clusters
+
+Cuando se **agrega** un cluster se crea una falta de balance ya que el nuevo servidor no tiene chunks, el balancer migra chunks de otros servidores al nuevo hasta que todos tienen aproximadamente la misma cantidad de chunks. Cuando se **elimina** un shard, el balancer migra todos los chunks del shard que se va a eliminar a los demás, al momento de migrar todos los datos y actualizar los metadatos, se quita seguramente los shards.
+
+
+
