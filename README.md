@@ -54,7 +54,7 @@ Una manera de distribuir los datos es llamado **hash based sharding**; consta de
 
 ![Sharding](/images/sharding.png)
 
-## Balance del distribución de los datos
+## Balance de la distribución de los datos
 
 Al insertar documentos, o eliminar documentos en una collección, se puede perder el balance en el cluster. Lo que significa, que un servidor puede llegar a tener más o menos chunks que otros. Además, es pósible que el tamaño de un chunk sea significativamente mayor que otros. Para prevenir este tipo de situaciones MongoDB corre dos procesos (1) **Splitting** y (2) **Balancing**. Splitting es un *background process* que evita que los chunks crezcan demasiado. Cuando un chunk
 crece demasiado lo divide entre dos y modifica los metadatos en el config server. Por otro lado, en el fondo corre el proceso **balancer** el cual administra la migración de chunks. El balancer corre en todos los query routers en un cluster. Cuando la distribución en un cluster no está equilibrada, el proceso balancer migra chunks de un servidor a otro hasta que todos tienen aproximadamente la misma cantidad de datos. 
@@ -63,5 +63,11 @@ crece demasiado lo divide entre dos y modifica los metadatos en el config server
 
 Cuando se **agrega** un cluster se crea una falta de balance ya que el nuevo servidor no tiene chunks, el balancer migra chunks de otros servidores al nuevo hasta que todos tienen aproximadamente la misma cantidad de chunks. Cuando se **elimina** un shard, el balancer migra todos los chunks del shard que se va a eliminar a los demás, al momento de migrar todos los datos y actualizar los metadatos, se quita seguramente los shards.
 
+# Ejecución del código
 
+Para ejecutar el código primero se tiene que clonar este repositorio y acceder a la carpeta.
 
+```
+git clone https://github.com/rickardo10/distributed-db-project.git
+cd distributed-db-project
+```
