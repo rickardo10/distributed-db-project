@@ -69,14 +69,14 @@ Se requiere contar con Vagrant y VirtualBox previamente instalados para ejecutar
 
 Para ejecutar el código primero se tiene que clonar este repositorio y acceder a la carpeta.
 
-```
+```bash
 git clone https://github.com/rickardo10/distributed-db-project.git
 cd distributed-db-project
 ```
 
 Después, se crean todos los nodos y se configuran al correr.
 
-```
+```bash
 vagrant up
 ```
 
@@ -84,7 +84,7 @@ Es necesesario que el usuario `vagrant` esté en sesión iniciada para se inicie
 
 Para que los datos se repliquen, es necesario iniciar un conjunto de réplica en el nodo que se quiera como maestro y agregar al nodo en el que se quiere que se repliquen todos los datos.
 
-```
+```bash
 mongo shard01:27040
 rs.initiate()
 rs.add("shard02:27040")
@@ -93,7 +93,7 @@ exit
 
 Después, se inicia una un mongo shell de un query server para agregar los shards y los conjuntos de réplica al cluster.
 
-```
+```bash
 mongo query01:27019
 sh.addShard("shard03:27040")
 sh.addShard("rep1/shard01:27040,shard02:27040")
