@@ -99,3 +99,54 @@ sh.addShard("shard03:27040")
 sh.addShard("rep1/shard01:27040,shard02:27040")
 exit
 ```
+
+Para verificar que existe un balanceo de datos entre los shards se agregan datos con las siguientes operaciones.
+
+```javascript
+mongo shard01:27040
+use test
+var bulk = db.test_collection.initializeUnorderedBulkOp();
+people = ["Marc", "Bill", "George", "Eliot", "Matt", "Trey", "Tracy", "Greg", "Steve", "Kristina", "Katie", "Jeff"];
+for(var i=0; i<1000000; i++){
+       user_id = i;
+       name = people[Math.floor(Math.random()*people.length)];
+       number = Math.floor(Math.random()*10001);
+       bulk.insert( { "user_id":user_id, "name":name, "number":number });
+}
+bulk.execute();
+exit
+```
+
+Antes de que comience el cluster a balancearse, se debe de permitir el **sharding** en la base de datos de la siguiente manera.
+
+```javascript
+mongo query01:27019/admin
+sh.enableSharding("test")
+```
+
+Luego se crea un índice en la shard key.
+
+```javascript
+use test
+db.test_collection.ensureIndex( {number:1} )
+```
+
+Y se agrega la collección al shard.
+
+```javascript
+use test
+sh.shardCollection( "test.test_collection", {"number":1} )
+```
+
+Se verifica que se están balanceando los shards.
+
+```javascript
+use test
+db.stats()
+db.printShardingStatus()
+```
+
+# Conclusión
+
+MongoDB es una buena alternativa en la elección de una base de datos distribuida ya que fragmenta de manera automática las bases de datos. Además, el balance de los datos en cada uno de los servidores se hace automáticamente. Por otro lado, los query servers en conjunto de los config servers permiten que las queries sean trasparentes al usuario, por lo que el usuario no se percata que la información está contenida en bases de datos diferentes. Finalmente, la replicación también se
+lleva a cabo de forma automática, ya que MongoDB ve a un conjunto de shards como uno solo conjúnto de replicación y se encarga de sincronizar los datos.
