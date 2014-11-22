@@ -65,9 +65,7 @@ Cuando se **agrega** un cluster se crea una falta de balance ya que el nuevo ser
 
 # Ejecución del código
 
-Se requiere contar con Vagrant y VirtualBox previamente instalados para ejecutar el código del repositorio.
-
-Para ejecutar el código primero se tiene que clonar este repositorio y acceder a la carpeta.
+Se requiere contar con Vagrant y VirtualBox previamente instalados para ejecutar el código del repositorio. Para ejecutar el código primero se tiene que clonar este repositorio y acceder a la carpeta.
 
 ```bash
 git clone https://github.com/rickardo10/distributed-db-project.git
@@ -80,9 +78,7 @@ Después, se crean todos los nodos y se configuran al correr.
 vagrant up
 ```
 
-Es necesesario que el usuario `vagrant` esté en sesión iniciada para se inicie el daemon de MongoDB y se puedan comunicar los servidores.
-
-Para que los datos se repliquen, es necesario iniciar un conjunto de réplica en el nodo que se quiera como maestro y agregar al nodo en el que se quiere que se repliquen todos los datos.
+Es necesesario que el usuario `vagrant` esté en sesión iniciada para se inicie el daemon de MongoDB y se puedan comunicar los servidores. Para que los datos se repliquen, es necesario iniciar un conjunto de réplica en el nodo que se quiera como maestro y agregar al nodo en el que se quiere que se repliquen todos los datos.
 
 ```bash
 mongo shard01:27040
